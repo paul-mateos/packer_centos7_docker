@@ -1,4 +1,4 @@
-# Packer - CentOS 7 Edelia build box for AWS, Vagrant using Ansible provisioner
+# Packer - CentOS 7 Edelia build box for AWS
 
 **Current CentOS Version Used**: 7.3
 
@@ -44,12 +44,3 @@ are read by the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-c
     $ packer build --only=virtualbox-iso edelia.json
 
     $ packer build --only=amazon-ebs edelia.json
-
-
-## License
-
-Derived from https://github.com/geerlingguy/packer-centos-7, MIT license.
-
-## Author Information
-
-Original version created in 2014 by [Jeff Geerling](http://jeffgeerling.com/).
