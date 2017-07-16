@@ -1,8 +1,16 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+class CentOSFix < VagrantVbguest::Installers::Linux
+    def install(opts=nil, &block)
+        communicate.sudo("yum install --enablerepo=elrepo-kernel -y gcc binutils make perl bzip2 kernel-ml-devel.x86_64", opts, &block)
+        super
+    end
+end
+
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
+  config.vbguest.installer = CentOSFix
 
   # VirtualBox.
   # `vagrant up virtualbox --provider=virtualbox`
