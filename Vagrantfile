@@ -10,7 +10,7 @@ end
 
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
-  config.vbguest.installer = CentOSFix
+  #config.vbguest.installer = CentOSFix
 
   # VirtualBox.
   # `vagrant up virtualbox --provider=virtualbox`

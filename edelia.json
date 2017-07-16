@@ -21,7 +21,6 @@
       "type": "shell",
       "execute_command": "echo 'vagrant' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "scripts": [
-        "scripts/kernel.sh",
         "scripts/docker.sh",
         "scripts/sshd.sh",
         "scripts/fix-slow-dns.sh",
