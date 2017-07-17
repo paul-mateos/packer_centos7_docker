@@ -1,4 +1,4 @@
-# Packer - CentOS 7 Edelia build box for AWS
+# Packer - CentOS 7 box for AWS
 
 **Current CentOS Version Used**: 7.3
 
@@ -11,7 +11,7 @@ It also creates images for :
   - Amazon-AWS
 
 For the cloud providers, you will need to provision environment variables for
-the cloud access credentials, see `edelia.json` at the root of the repo.
+the cloud access credentials, see `config.json` at the root of the repo.
 
 ## Requirements
 
@@ -30,7 +30,7 @@ The image is provisioned with Packer, using a centos7 base image and an Ansible 
 
 Make sure all the required software (listed above) is installed, then cd to the directory containing this README.md file, and run:
 
-    $ packer build edelia.json
+    $ packer build config.json
 
 After a few minutes, Packer should tell you the box was generated successfully.
 
@@ -41,6 +41,6 @@ are read by the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-c
 
     AWS_SECRET_ACCESS_KEY
 
-    $ packer build --only=virtualbox-iso edelia.json
+    $ packer build --only=virtualbox-iso config.json
 
-    $ packer build --only=amazon-ebs edelia.json
+    $ packer build --only=amazon-ebs config.json

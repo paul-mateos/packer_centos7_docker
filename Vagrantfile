@@ -15,8 +15,8 @@ Vagrant.configure("2") do |config|
   # VirtualBox.
   # `vagrant up virtualbox --provider=virtualbox`
   config.vm.define "virtualbox" do |virtualbox|
-    virtualbox.vm.hostname = "edelia-centos7"
-    virtualbox.vm.box = "file://builds/edelia-virtualbox-centos7.box"
+    virtualbox.vm.hostname = "centos7"
+    virtualbox.vm.box = "file://builds/virtualbox-centos7.box"
     virtualbox.vm.network :private_network, ip: "172.16.3.2"
 
     config.vm.provider :virtualbox do |v|

@@ -38,8 +38,8 @@
       "instance_type": "t2.micro",
       "ssh_username": "centos",
       "ssh_pty": "true",
-      "ami_name": "edelia-os {{timestamp}}",
-      "ami_description": "Edelia OS - Automatically generated with packer",
+      "ami_name": "os {{timestamp}}",
+      "ami_description": "OS - Automatically generated with packer",
       "ami_virtualization_type": "hvm",
       "associate_public_ip_address": "true",
       "tags": {}
@@ -86,7 +86,7 @@
   ],
   "post-processors": [
     {
-      "output": "builds/edelia-{{.Provider}}-centos7.box",
+      "output": "builds/{{.Provider}}-centos7.box",
       "type": "vagrant",
       "only": ["virtualbox-iso"]
     }
