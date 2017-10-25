@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Packer - CentOS 7 box for AWS
 
 **Current CentOS Version Used**: 7.3
@@ -44,3 +45,7 @@ are read by the [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-c
     $ packer build --only=virtualbox-iso config.json
 
     $ packer build --only=amazon-ebs config.json
+=======
+# packer_centos7_docker
+Rpo that will create image with centos and docker for virtualbox
+>>>>>>> 4fa6a2e6fa9a878ad779f78f0c53c80cdd9d7a0e
