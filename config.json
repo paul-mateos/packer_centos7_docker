@@ -1,14 +1,56 @@
 {
-    "variables": {
-        "home": "{{env `HOME`}}",
-        "aws_cli_comment": "These should really be configured using the AWS cli",
-        "aws_access_key": "{{ env `AWS_ACCESS_KEY`}}",
-        "aws_secret_key": "{{ env `AWS_SECRET_KEY` }}",
-        "centos_ami": "ami-fa2df395",
-        "aws_default_region": "eu-central-1"
+  "variables": {
+        "home": "{{env `HOME`}}"
     },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "ssh_pty": "true",
+      "boot_wait": "10s",
+      "disk_size": 20480,
+      "guest_os_type": "RedHat_64",
+      "headless": true,
+      "http_directory": "http",
+      "guest_additions_mode": "upload",
+	  "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "iso_urls": [
+        "CentOS-7-x86_64-Minimal-1708.iso",
+        "http://mirrors.ocf.berkeley.edu/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1708.iso"
+      ],
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "bba314624956961a2ea31dd460cd860a77911c1e0a56e4820a12b9c5dad363f5",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'halt -p' > shutdown.sh; echo 'vagrant'|sudo -S sh 'shutdown.sh'",
+      "vm_name": "packer-centos7-docker",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    }
+  ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "docker.service",
+      "destination": "/tmp/docker.service"
+    },
+	{
       "type": "shell",
       "only": ["virtualbox-iso"],
       "execute_command": "echo 'vagrant' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
@@ -21,74 +63,31 @@
       "type": "shell",
       "execute_command": "echo 'vagrant' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "scripts": [
-        "scripts/docker.sh",
         "scripts/sshd.sh",
         "scripts/fix-slow-dns.sh",
-        "scripts/cleanup.sh"
+        "scripts/docker.sh",   
+		"scripts/git.sh"
       ]
     }
   ],
-  "builders": [
-    {
-      "type": "amazon-ebs",
-      "access_key": "{{user `aws_access_key`}}",
-      "secret_key": "{{user `aws_secret_key`}}",
-      "region": "{{user `aws_default_region`}}",
-      "source_ami": "{{user `centos_ami`}}",
-      "instance_type": "t2.micro",
-      "ssh_username": "centos",
-      "ssh_pty": "true",
-      "ami_name": "os {{timestamp}}",
-      "ami_description": "OS - Automatically generated with packer",
-      "ami_virtualization_type": "hvm",
-      "associate_public_ip_address": "true",
-      "tags": {}
-    },
-    {
-      "type": "virtualbox-iso",
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
-      ],
-      "ssh_pty": "true",
-      "boot_wait": "10s",
-      "disk_size": 81920,
-      "guest_os_type": "RedHat_64",
-      "headless": true,
-      "http_directory": "http",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "iso_urls": [
-        "CentOS-7-x86_64-Minimal-1611.iso",
-        "http://ftp.wrz.de/pub/CentOS/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso"
-      ],
-      "iso_checksum_type": "sha256",
-      "iso_checksum": "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "ssh_port": 22,
-      "ssh_wait_timeout": "10000s",
-      "shutdown_command": "echo 'halt -p' > shutdown.sh; echo 'vagrant'|sudo -S sh 'shutdown.sh'",
-      "vm_name": "packer-centos-7-x86_64",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "512"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "2"
-        ]
-      ]
-    }
-  ],
-  "post-processors": [
-    {
-      "output": "builds/{{.Provider}}-centos7.box",
-      "type": "vagrant",
-      "only": ["virtualbox-iso"]
-    }
-  ]
+  
+  "post-processors": ["vagrant"],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo mkdir /tmp/vboxguest",
+      "sudo mount -t iso9660 -o loop ./VBoxGuestAdditions.iso /tmp/vboxguest",
+      "sudo yum -y --enablerepo rpmforge install dkms",
+      "sudo yum -y groupinstall 'Development Tools'",
+      "sudo yum -y install kernel-devel-2.6.32-504.el6.x86_64",
+      "cd /tmp/vboxguest",
+      "sudo ./VBoxLinuxAdditions.run",
+      "cd /tmp",
+      "sudo umount /tmp/vboxguest",
+      "sudo rmdir /tmp/vboxguest",
+      "rm /home/vagrant/VBoxGuestAdditions.iso",
+      "echo Image Provisioned!"
+    ]
+  }]
 }
