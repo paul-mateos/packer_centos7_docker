@@ -64,7 +64,7 @@
       "scripts": [
         "scripts/sshd.sh",
         "scripts/fix-slow-dns.sh",
-        "scripts/docker.sh"
+        "scripts/docker.sh",
         "scripts/saltstack.sh"
       ]
     }
