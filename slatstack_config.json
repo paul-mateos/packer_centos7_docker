@@ -26,7 +26,7 @@
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
       "shutdown_command": "echo 'halt -p' > shutdown.sh; echo 'vagrant'|sudo -S sh 'shutdown.sh'",
-      "vm_name": "packer-centos7-docker",
+      "vm_name": "packer-centos7-docker-saltstack",
       "vboxmanage": [
         [
           "modifyvm",
@@ -64,7 +64,8 @@
       "scripts": [
         "scripts/sshd.sh",
         "scripts/fix-slow-dns.sh",
-        "scripts/docker.sh" 
+        "scripts/docker.sh"
+        "scripts/saltstack.sh"
       ]
     }
   ]

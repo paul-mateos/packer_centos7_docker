@@ -6,6 +6,8 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder '.', '/vagrant', type: 'nfs'
 
   # VirtualBox.
+  ######User these commands#####
+  #
   # `vagrant up virtualbox --provider=virtualbox`
   config.vm.define "virtualbox" do |virtualbox|
     virtualbox.vm.hostname = "localhost"
@@ -16,8 +18,6 @@ Vagrant.configure("2") do |config|
       v.gui = false
       v.memory = 2048
       v.cpus = 1
-   #   v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-   #   v.customize ["modifyvm", :id, "--ioapic", "on"]
     end
 
   end

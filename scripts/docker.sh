@@ -23,8 +23,8 @@ readonly DOCKERGEN_TARBALL=docker-gen-linux-amd64-$DOCKERGEN_VERSION.tar.gz
 readonly DOCKERIZE_VERSION=v0.2.0
 readonly DOCKERIZE_TARBALL=dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-readonly CADVISOR_VERSION=0.23.8
-readonly CADVISOR_EXE_URL=https://github.com/google/cadvisor/releases/download/$CADVISOR_VERSION/cadvisor
+#readonly CADVISOR_VERSION=0.23.8
+#readonly CADVISOR_EXE_URL=https://github.com/google/cadvisor/releases/download/$CADVISOR_VERSION/cadvisor
 
 
 #==========================================================#
@@ -162,14 +162,14 @@ EOF_BENCH_SECURITY
 chmod a+x /usr/local/bin/docker-bench-security
 
 
-# install cAdvisor
-curl -o /usr/local/bin/cadvisor -L $CADVISOR_EXE_URL
-chmod a+x /usr/local/bin/cadvisor
-docker pull google/cadvisor:latest
+# # install cAdvisor
+# curl -o /usr/local/bin/cadvisor -L $CADVISOR_EXE_URL
+# chmod a+x /usr/local/bin/cadvisor
+# docker pull google/cadvisor:latest
 
-# configure for systemd
-cp /tmp/cadvisor.service  /lib/systemd/system/
-sudo systemctl enable cadvisor
+# # configure for systemd
+# cp /tmp/cadvisor.service  /lib/systemd/system/
+# sudo systemctl enable cadvisor
 
 
 
